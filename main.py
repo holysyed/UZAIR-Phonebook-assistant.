@@ -1,4 +1,11 @@
-contacts = {}
+import json
+
+# Load contacts from file
+try:
+    with open("contacts.json", "r") as file:
+        contacts = json.load(file)
+except:
+    contacts = {}
 
 while True:
     print("\n1. Add Contact")
@@ -11,6 +18,11 @@ while True:
         name = input("Enter name: ")
         number = input("Enter number: ")
         contacts[name] = number
+
+        # Save to file
+        with open("contacts.json", "w") as file:
+            json.dump(contacts, file)
+
         print("Contact saved!")
 
     elif choice == "2":
@@ -18,10 +30,11 @@ while True:
         if name in contacts:
             print("Number:", contacts[name])
         else:
-            print("Not found")
+            print("Not found may be added in YOUR cerebal cortex ")
 
     elif choice == "3":
+        print("Goodbye from Uzair ;) ")
         break
 
     else:
-        print("Invalid choice")
+        print("Invalid choice, Are you DUMB? ")
