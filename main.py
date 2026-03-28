@@ -1,75 +1,96 @@
+import customtkinter as ctk
 import json
-import tkinter as tk
+
+ctk.set_appearance_mode("dark")
+ctk.set_default_color_theme("blue")
 
 # Load contacts
 try:
-    with open("contacts.json", "r") as file:
-        contacts = json.load(file)
+    with open("contacts.json", "r") as f:
+        contacts = json.load(f)
 except:
     contacts = {}
 
-# Functions
-def add_contact():
-    name = name_entry.get()
-    number = number_entry.get()
+# Save contacts
+def save_contacts():
+    with open("contacts.json", "w") as f:
+        json.dump(contacts, f, indent=4)
 
-    if name and number:
+# Chat logic
+def process_command(command):
+    words = command.lower().split()
+
+    if words[0] == "add" and len(words) >= 3:
+        name = words[1]
+        number = words[2]
         contacts[name] = number
+        save_contacts()
+        return f"✅ Added {name}"
 
-        with open("contacts.json", "w") as file:
-            json.dump(contacts, file)
+    elif words[0] == "find" and len(words) >= 2:
+        name = words[1]
+        return contacts.get(name, "❌ Contact not found")
 
-        status_label.config(text="✅ Contact saved!", fg="#00ffcc")
-        name_entry.delete(0, tk.END)
-        number_entry.delete(0, tk.END)
+    elif words[0] == "delete" and len(words) >= 2:
+        name = words[1]
+        if name in contacts:
+            del contacts[name]
+            save_contacts()
+            return f"🗑 Deleted {name}"
+        return "❌ Contact not found"
+
     else:
-        status_label.config(text="⚠️ Fill all fields!", fg="orange")
+        return "🤖 Try: add Ali 9876543210 / find Ali"
 
+# Send message
+def send_message():
+    user_msg = entry.get()
+    if not user_msg:
+        return
 
-def search_contact():
-    name = name_entry.get()
+    chatbox.insert("end", f"You: {user_msg}\n")
+    response = process_command(user_msg)
+    chatbox.insert("end", f"Uzair: {response}\n\n")
+    entry.delete(0, "end")
+    update_contact_list()
 
-    if name in contacts:
-        status_label.config(text=f"📞 {contacts[name]}", fg="#00ffcc")
-    else:
-        status_label.config(text="❌ Stored in your cerebal cortox?", fg="red")
+# Update sidebar
+def update_contact_list():
+    listbox.delete("0.0", "end")
+    for name in contacts:
+        listbox.insert("end", f"{name} : {contacts[name]}\n")
 
+# App window
+app = ctk.CTk()
+app.title("Uzair Assistant")
+app.geometry("700x450")
 
-# Main Window
-root = tk.Tk()
-root.title("Uzair Assistant")
-root.geometry("400x350")
-root.config(bg="#0f172a")  # dark background
+# Layout
+frame = ctk.CTkFrame(app)
+frame.pack(fill="both", expand=True, padx=10, pady=10)
 
-# Title
-tk.Label(root, text="UZair Phonebook", 
-         font=("Helvetica", 18, "bold"), 
-         bg="#0f172a", fg="#38bdf8").pack(pady=15)
+# Sidebar
+sidebar = ctk.CTkFrame(frame, width=200)
+sidebar.pack(side="left", fill="y", padx=5, pady=5)
 
-# Frame (card style)
-frame = tk.Frame(root, bg="#1e293b", padx=20, pady=20)
-frame.pack(pady=10)
+ctk.CTkLabel(sidebar, text="Contacts", font=("Arial", 16)).pack(pady=10)
 
-# Name
-tk.Label(frame, text="Name", bg="#1e293b", fg="white").grid(row=0, column=0, sticky="w")
-name_entry = tk.Entry(frame, width=25)
-name_entry.grid(row=1, column=0, pady=5)
+listbox = ctk.CTkTextbox(sidebar, width=200)
+listbox.pack(fill="both", expand=True, padx=5, pady=5)
 
-# Number
-tk.Label(frame, text="Number", bg="#1e293b", fg="white").grid(row=2, column=0, sticky="w")
-number_entry = tk.Entry(frame, width=25)
-number_entry.grid(row=3, column=0, pady=5)
+# Chat area
+chat_frame = ctk.CTkFrame(frame)
+chat_frame.pack(side="right", fill="both", expand=True, padx=5, pady=5)
 
-# Buttons
-tk.Button(frame, text="Add Contact", bg="#22c55e", fg="white",
-          width=20, command=add_contact).grid(row=4, column=0, pady=10)
+chatbox = ctk.CTkTextbox(chat_frame)
+chatbox.pack(fill="both", expand=True, padx=5, pady=5)
 
-tk.Button(frame, text="Search Contact", bg="#3b82f6", fg="white",
-          width=20, command=search_contact).grid(row=5, column=0)
+entry = ctk.CTkEntry(chat_frame, placeholder_text="Type command...")
+entry.pack(fill="x", padx=5, pady=5)
 
-# Status label (UX improvement)
-status_label = tk.Label(root, text="", bg="#0f172a", fg="white", font=("Arial", 10))
-status_label.pack(pady=10)
+send_btn = ctk.CTkButton(chat_frame, text="Send", command=send_message)
+send_btn.pack(pady=5)
 
-# Run app
-root.mainloop()
+update_contact_list()
+
+app.mainloop()
