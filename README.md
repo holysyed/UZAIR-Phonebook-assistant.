@@ -34,7 +34,7 @@ uzair-phonebook/
 ├── README.md
 └── .gitignore
 
-▶️ How to Run
+ How to Run
 
 1\. Clone the repository:
 
@@ -43,3 +43,11 @@ uzair-phonebook/
 git clone https://github.com/holysyed/UZAIR-Phonebook-assistant.git
 
 
+---
+
+  STEP 3 — Save + Push
+
+```bash
+git add README.md
+git commit -m "Added professional README"
+git push
