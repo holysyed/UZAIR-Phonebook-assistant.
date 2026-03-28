@@ -1,6 +1,5 @@
 import json
 import tkinter as tk
-from tkinter import messagebox
 
 # Load contacts
 try:
@@ -20,37 +19,57 @@ def add_contact():
         with open("contacts.json", "w") as file:
             json.dump(contacts, file)
 
-        messagebox.showinfo("Success", "Contact saved!")
+        status_label.config(text="✅ Contact saved!", fg="#00ffcc")
         name_entry.delete(0, tk.END)
         number_entry.delete(0, tk.END)
     else:
-        messagebox.showwarning("Error", "Enter both fields Dumbo!")
+        status_label.config(text="⚠️ Fill all fields!", fg="orange")
+
 
 def search_contact():
     name = name_entry.get()
 
     if name in contacts:
-        messagebox.showinfo("Result", f"Number: {contacts[name]}")
+        status_label.config(text=f"📞 {contacts[name]}", fg="#00ffcc")
     else:
-        messagebox.showerror( "can not be found", "stored in your cerebal cortex?")
+        status_label.config(text="❌ Stored in your cerebal cortox?", fg="red")
 
-# GUI Setup
+
+# Main Window
 root = tk.Tk()
-root.title("Uzair Phonebook Assistant")
-root.geometry("550x450")
+root.title("Uzair Assistant")
+root.geometry("400x350")
+root.config(bg="#0f172a")  # dark background
 
-# Labels
-tk.Label(root, text="Name").pack(pady=5)
-name_entry = tk.Entry(root)
-name_entry.pack()
+# Title
+tk.Label(root, text="UZair Phonebook", 
+         font=("Helvetica", 18, "bold"), 
+         bg="#0f172a", fg="#38bdf8").pack(pady=15)
 
-tk.Label(root, text="Number").pack(pady=5)
-number_entry = tk.Entry(root)
-number_entry.pack()
+# Frame (card style)
+frame = tk.Frame(root, bg="#1e293b", padx=20, pady=20)
+frame.pack(pady=10)
+
+# Name
+tk.Label(frame, text="Name", bg="#1e293b", fg="white").grid(row=0, column=0, sticky="w")
+name_entry = tk.Entry(frame, width=25)
+name_entry.grid(row=1, column=0, pady=5)
+
+# Number
+tk.Label(frame, text="Number", bg="#1e293b", fg="white").grid(row=2, column=0, sticky="w")
+number_entry = tk.Entry(frame, width=25)
+number_entry.grid(row=3, column=0, pady=5)
 
 # Buttons
-tk.Button(root, text="Add Contact", command=add_contact).pack(pady=10)
-tk.Button(root, text="Search Contact", command=search_contact).pack(pady=5)
+tk.Button(frame, text="Add Contact", bg="#22c55e", fg="white",
+          width=20, command=add_contact).grid(row=4, column=0, pady=10)
+
+tk.Button(frame, text="Search Contact", bg="#3b82f6", fg="white",
+          width=20, command=search_contact).grid(row=5, column=0)
+
+# Status label (UX improvement)
+status_label = tk.Label(root, text="", bg="#0f172a", fg="white", font=("Arial", 10))
+status_label.pack(pady=10)
 
 # Run app
 root.mainloop()
