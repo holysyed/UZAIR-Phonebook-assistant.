@@ -1,7 +1,6 @@
 \# 🚀 Uzair Phonebook Assistant
 
 
-
 A smart and user-friendly \*\*Phonebook Assistant Application\*\* built using Python.
 
 Uzair allows users to \*\*store, search, and manage contacts\*\* with a clean GUI interface and persistent data storage.
@@ -11,9 +10,12 @@ Uzair allows users to \*\*store, search, and manage contacts\*\* with a clean GU
 \---
 
 
+20; Features
 
-&#x20; Features
+A smart and user-friendly Phonebook Assistant Application built using Python.
+Uzair allows users to store, search, and manage contacts with a clean GUI interface and persistent data storage.
 
+ Features
 
 
 \- 📇 Add new contacts
@@ -25,7 +27,7 @@ Uzair allows users to \*\*store, search, and manage contacts\*\* with a clean GU
 \- 🖥️ Clean and modern GUI (Tkinter)
 
 \- ⚡ Fast and lightweight
-
+ 
 
 
 \---
@@ -35,6 +37,9 @@ Uzair allows users to \*\*store, search, and manage contacts\*\* with a clean GU
 🛠️ Tech Stack
 
 
+
+
+🛠️ Tech Stack
 
 \- Python 3
 
@@ -48,7 +53,7 @@ Uzair allows users to \*\*store, search, and manage contacts\*\* with a clean GU
 
 \---
 
-&#x20;📂 Project Structure
+📂 Project Structure
 
 
 
@@ -70,9 +75,20 @@ uzair-phonebook/
 
 
 
-&#x20;▶️ How to Run
+;▶️ How to Run
 
 
+
+📂 Project Structure
+
+uzair-phonebook/
+│
+├── main.py
+├── contacts.json
+├── README.md
+└── .gitignore
+
+ How to Run
 
 1\. Clone the repository:
 
@@ -81,3 +97,11 @@ uzair-phonebook/
 git clone https://github.com/holysyed/UZAIR-Phonebook-assistant.git
 
 
+---
+
+  STEP 3 — Save + Push
+
+```bash
+git add README.md
+git commit -m "Added professional README"
+git push
